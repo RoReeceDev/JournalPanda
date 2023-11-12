@@ -1,0 +1,161 @@
+<!doctype html>
+<html>
+
+<head>
+  <title>Jounal Panda</title>
+  <!--<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">-->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Edu+TAS+Beginner:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+  <link rel="stylesheet" href="../style.css">
+</head>
+
+<body>
+  <div class="container-box">
+
+    <div class="header">
+      <h1><span class="fa fa-book"></span> Welcome <% if (user.local.email) { %>
+          <%= user.local.email.split('@')[0] %>
+            <% } %>
+      </h1>
+      <a href="/logout" class="btn btn-default btn-sm logout">Logout</a>
+    </div>
+    <div class="info">
+
+      <div class=" user-entry">
+
+        <!-- LOCAL INFORMATION -->
+        <div class=" user">
+          <div class="well">
+            <h3><span class="fa fa-user"></span> Local User Profile</h3>
+
+            <% if (user.local.email) { %>
+              <p>
+                <strong>id</strong>: <%= user._id %><br>
+                  <strong>email</strong>: <%= user.local.email %><br>
+                    <span class="hide-pass"><strong>password</strong>: </span><span class="hidden password">
+                      <%= user.local.password %>
+                    </span>
+              </p>
+
+              <a href="/unlink/local" class="btn btn-default unlink">Unlink</a>
+              <% } else { %>
+                <a href="/connect/local" class="btn btn-default connect-local">Connect Local</a>
+                <% } %>
+
+          </div>
+        </div>
+        <!--LOG JOURNAL ENTRY-->
+        <div class="entry">
+          <h3>Journal Entries</h3>
+          <section class="messages">
+            <% for(var i=0; i<messages.length; i++) {%>
+              <article class=" message">
+                <div class="entry-info">
+                  <h3 class="name">
+                    <%= messages[i].title %>
+                  </h3>
+                  <div class="tag-cont">
+                    <span class="tag-head">tags:</span>
+                    <span class="tagslist">
+                      <%= messages[i].tagsArr.join(', ') %>
+                    </span>
+                  </div>
+                  <div class="date-cont">
+                    <span class="date-head">Last Updated:</span>
+                    <span class="lastVisited">
+                      <%= messages[i].dateCreated %>
+                    </span>
+                  </div>
+                </div>
+              <div class="change">
+                <span><i class="fa fa-eye" aria-hidden="true" data-id="<%= messages[i]._id %>"></i></span>
+                <span><i class="fa fa-edit" aria-hidden="true" data-id="<%= messages[i]._id %>"></i></span>
+                <span><i class="fa fa-tag" aria-hidden="true" data-id="<%= messages[i]._id %>"></i></span>
+                <span><i class="fa fa-trash-o" aria-hidden="true" data-id="<%= messages[i]._id %>"></i></span>
+              </div>
+
+              <!--TAG JOURNAL-->
+              <div class="tag hidden" id="tag_<%= messages[i]._id %>">
+                <h4>Add a tag</h4>
+                <% if (user.local.email) { %>
+                  <form action="/messages/tag?_method=PUT" method="POST">
+                    <input type="hidden" name="id" value="<%= messages[i]._id %>">
+                    <div class="update-tags">
+                    <input class="update-tag-name" type="text" placeholder="enter one tag" name="updateTags">
+                    <button class="tagBut" type="submit">Add Tag</button>
+                    </div>
+                  </form>
+              </div>
+              <% } %>
+                  
+                  <!--VIEW JOURNAL-->
+
+                    <div class="view <%= messages[i].isVisible ? ' viewoff' : 'hidden' %>" data-id="<%= messages[i]._id
+                          %>">
+                          <h4 class="view-name name">
+                            <%= messages[i].title %>
+                          </h4>
+                          <p class="view-msg msg">
+                            <%= messages[i].entry %>
+                          </p>
+                  </div>
+
+                  <!--EDIT JOURNAL-->
+
+                  <div class="editing hidden" id="editing_<%= messages  [i]._id %>">
+                    <h4>update your journal entry</h4>
+                    <div class="update-entry">
+                      <% if (user.local.email) { %>
+                        <form action="/messages/update?_method=PUT" method="POST">
+                          <input type="hidden" name="id" value="<%= messages[i]._id %>">
+                          <div>
+                            <label class="update-title" for="updateTitle">Journal Title:</label>
+                            <input class="update-title-box" type="text" value="<%= messages[i].title %>"
+                              name="updateTitle">
+                            <button class="update-submit" type="submit">Submit</button>
+                          </div>
+                          <textarea class="update-text" rows="20" cols="60" value="<%= messages[i].entry %>"
+                            name="updateEntry"><%= messages[i].entry %></textarea>
+                        </form>
+                    </div>
+                  </div>
+                  <% } %>
+              </article>
+              <% } %>
+          </section>
+
+        </div>
+
+      </div>
+
+      <!--CREATE JOURNAL ENTRY-->
+
+      <div class="journal">
+
+        <h2>Create a Journal Entry</h2>
+        <div class="create">
+          <% if (user.local.email) { %>
+            <form action="/messages" method="POST">
+              <div class="type">
+                <label class="j-title" for="title">Journal Title:</label>
+                <input class="j-title-in" type="text" placeholder="title" name="title">
+                <button class="j-submit" type="submit">Submit</button>
+              </div>
+              <textarea rows="30" cols="110" placeholder="write down your thoughts here!" name="entry"></textarea>
+            </form>
+        </div>
+      </div>
+      <% } %>
+    </div>
+
+
+  </div>
+
+  <script src="main.js"></script>
+
+</body>
+
+</html>
