@@ -5,7 +5,7 @@
 var express  = require('express'); //gets express 
 var methodOR = require('method-override')  
 var app      = express();
-var port     = process.env.PORT || 8090; //port is whatever th
+var port     = process.env.PORT || 8080; //port is whatever th
 const MongoClient = require('mongodb').MongoClient //helps talk to databse
 var mongoose = require('mongoose'); //how we really talk to our database
 var passport = require('passport'); //authentication 
