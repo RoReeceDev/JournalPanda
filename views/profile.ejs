@@ -48,41 +48,41 @@
           </div>
         </div>
         <!--LOG JOURNAL ENTRY-->
-        <div class="entry">
+        <div class="entry-box">
           <h3>Journal Entries</h3>
-          <section class="messages">
-            <% for(var i=0; i<messages.length; i++) {%>
-              <article class=" message">
+          <section class="entries">
+            <% for(var i=0; i<entries.length; i++) {%>
+              <article class=" entry">
                 <div class="entry-info">
                   <h3 class="name">
-                    <%= messages[i].title %>
+                    <%= entries[i].title %>
                   </h3>
                   <div class="tag-cont">
                     <span class="tag-head">tags:</span>
                     <span class="tagslist">
-                      <%= messages[i].tagsArr.join(', ') %>
+                      <%= entries[i].tagsArr.join(', ') %>
                     </span>
                   </div>
                   <div class="date-cont">
                     <span class="date-head">Last Updated:</span>
                     <span class="lastVisited">
-                      <%= messages[i].dateCreated %>
+                      <%= entries[i].dateCreated %>
                     </span>
                   </div>
                 </div>
               <div class="change">
-                <span><i class="fa fa-eye" aria-hidden="true" data-id="<%= messages[i]._id %>"></i></span>
-                <span><i class="fa fa-edit" aria-hidden="true" data-id="<%= messages[i]._id %>"></i></span>
-                <span><i class="fa fa-tag" aria-hidden="true" data-id="<%= messages[i]._id %>"></i></span>
-                <span><i class="fa fa-trash-o" aria-hidden="true" data-id="<%= messages[i]._id %>"></i></span>
+                <span>View <i class="fa fa-eye" aria-hidden="true" data-id="<%= entries[i]._id %>"></i></span>
+                <span>Edit <i class="fa fa-edit" aria-hidden="true" data-id="<%= entries[i]._id %>"></i></span>
+                <span>Tag <i class="fa fa-tag" aria-hidden="true" data-id="<%= entries[i]._id %>"></i></span>
+                <span><i class="fa fa-trash-o" aria-hidden="true" data-id="<%= entries[i]._id %>"></i></span>
               </div>
 
               <!--TAG JOURNAL-->
-              <div class="tag hidden" id="tag_<%= messages[i]._id %>">
+              <div class="tag hidden" id="tag_<%= entries[i]._id %>">
                 <h4>Add a tag</h4>
                 <% if (user.local.email) { %>
-                  <form action="/messages/tag?_method=PUT" method="POST">
-                    <input type="hidden" name="id" value="<%= messages[i]._id %>">
+                  <form action="/entries/tag?_method=PUT" method="POST">
+                    <input type="hidden" name="id" value="<%= entries[i]._id %>">
                     <div class="update-tags">
                     <input class="update-tag-name" type="text" placeholder="enter one tag" name="updateTags">
                     <button class="tagBut" type="submit">Add Tag</button>
@@ -93,32 +93,32 @@
                   
                   <!--VIEW JOURNAL-->
 
-                    <div class="view <%= messages[i].isVisible ? ' viewoff' : 'hidden' %>" data-id="<%= messages[i]._id
+                    <div class="view <%= entries[i].isVisible ? ' viewoff' : 'hidden' %>" data-id="<%= entries[i]._id
                           %>">
                           <h4 class="view-name name">
-                            <%= messages[i].title %>
+                            <%= entries[i].title %>
                           </h4>
                           <p class="view-msg msg">
-                            <%= messages[i].entry %>
+                            <%= entries[i].entry %>
                           </p>
                   </div>
 
                   <!--EDIT JOURNAL-->
 
-                  <div class="editing hidden" id="editing_<%= messages  [i]._id %>">
+                  <div class="editing hidden" id="editing_<%= entries[i]._id %>">
                     <h4>update your journal entry</h4>
                     <div class="update-entry">
                       <% if (user.local.email) { %>
-                        <form action="/messages/update?_method=PUT" method="POST">
-                          <input type="hidden" name="id" value="<%= messages[i]._id %>">
+                        <form action="/entries/update?_method=PUT" method="POST">
+                          <input type="hidden" name="id" value="<%= entries[i]._id %>">
                           <div>
                             <label class="update-title" for="updateTitle">Journal Title:</label>
-                            <input class="update-title-box" type="text" value="<%= messages[i].title %>"
+                            <input class="update-title-box" type="text" value="<%= entries[i].title %>"
                               name="updateTitle">
                             <button class="update-submit" type="submit">Submit</button>
                           </div>
-                          <textarea class="update-text" rows="20" cols="60" value="<%= messages[i].entry %>"
-                            name="updateEntry"><%= messages[i].entry %></textarea>
+                          <textarea class="update-text" rows="20" cols="60" value="<%= entries[i].entry %>"
+                            name="updateEntry"><%= entries[i].entry %></textarea>
                         </form>
                     </div>
                   </div>
@@ -138,7 +138,7 @@
         <h2>Create a Journal Entry</h2>
         <div class="create">
           <% if (user.local.email) { %>
-            <form action="/messages" method="POST">
+            <form action="/entries" method="POST">
               <div class="type">
                 <label class="j-title" for="title">Journal Title:</label>
                 <input class="j-title-in" type="text" placeholder="title" name="title">

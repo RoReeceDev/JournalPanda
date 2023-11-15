@@ -36,7 +36,7 @@ Building this journaling app provided numerous learning opportunities and moment
 ## Usage
 
 1. run `node server.js`
-2. Navigate to `localhost:8080`
+2. Navigate to `localhost: 9000`
 
 ## Credit
 

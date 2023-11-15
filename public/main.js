@@ -22,7 +22,7 @@ Array.from(tags).forEach(function(element) {
   element.addEventListener('click', function(){
 
     //target the closest message box to the update icon that is clicked
-    const listItem = this.closest('.message')
+    const listItem = this.closest('.entry')
 
     const tagDiv = listItem.querySelector('.tag');
     tagDiv.classList.toggle('tagon')
@@ -36,13 +36,13 @@ Array.from(tags).forEach(function(element) {
 
 Array.from(views).forEach(function(element) {
   element.addEventListener('click', function(){
-    const listItem = this.closest('.message');
+    const listItem = this.closest('.entry');
     const viewDiv = listItem.querySelector('.view');
     const id = listItem.dataset.id;
 
     viewDiv.classList.toggle('hidden');
 
-    fetch('/messages/view', {
+    fetch('/entries/view', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
@@ -66,7 +66,7 @@ Array.from(edits).forEach(function(element) {
   element.addEventListener('click', function(){
 
     //target the closest message box to the update icon that is clicked
-    const listItem = this.closest('.message')
+    const listItem = this.closest('.entry')
     const title = listItem.querySelector('.name').textContent
     const entry = listItem.querySelector('.msg').textContent
     const id = listItem.dataset.id
@@ -81,7 +81,7 @@ Array.from(edits).forEach(function(element) {
     editingDiv.classList.toggle('hidden')
 
 
-    fetch('messages/update', {
+    fetch('entries/update', {
       method: 'PUT',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
@@ -109,11 +109,11 @@ Array.from(edits).forEach(function(element) {
 
 Array.from(trash).forEach(function(element) {
   element.addEventListener('click', function(){
-    const listItem = this.closest('.message')
+    const listItem = this.closest('.entry')
     const name = listItem.querySelector('.name').textContent
     const id = this.dataset.id
 
-    fetch('messages', {
+    fetch('entries', {
       method: 'delete',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({

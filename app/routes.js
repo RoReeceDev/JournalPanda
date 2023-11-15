@@ -13,11 +13,11 @@ module.exports = function (app, passport, db) {
 
   // PROFILE SECTION =========================
   app.get('/profile', isLoggedIn, function (req, res) {
-    db.collection('messages').find().sort({ star: -1 }).toArray((err, result) => {
+    db.collection('entries').find().sort({ star: -1 }).toArray((err, result) => {
       if (err) return console.log(err);
       res.render('profile.ejs', {
         user: req.user,
-        messages: result
+        entries: result
       });
     });
   });
@@ -33,8 +33,8 @@ module.exports = function (app, passport, db) {
 
 
   // randomize restaurant server side ==============================================
-  app.get('/messages/randomize', (req, res) => {
-    db.collection('messages')
+  app.get('/entries/randomize', (req, res) => {
+    db.collection('entries')
       .find({ star: { $gte: 2, $lte: 4 } }) // Filter by star ratings 3-5
       .toArray((err, result) => {
         if (err) return res.status(500).json({ error: 'Internal Server Error' });
@@ -44,8 +44,8 @@ module.exports = function (app, passport, db) {
 
   // restaurant routes ===============================================================
 
-  app.post('/messages', (req, res) => {
-    db.collection('messages').insertOne({ title: req.body.title, entry: req.body.entry, dateCreated: new Date().toLocaleString(), tagsArr: [], }, (err, result) => {
+  app.post('/entries', (req, res) => {
+    db.collection('entries').insertOne({ title: req.body.title, entry: req.body.entry, dateCreated: new Date().toLocaleString(), tagsArr: [], }, (err, result) => {
       if (err) return console.log(err)
       console.log('saved to database')
       res.redirect('/profile')
@@ -53,11 +53,11 @@ module.exports = function (app, passport, db) {
   })
 
 
-  //update star rating =================
+  //update tags  =================
 
-  app.put('/messages', (req, res) => {
+  app.put('/entries', (req, res) => {
     console.log(req.body)
-    db.collection('messages')
+    db.collection('entries')
       .findOneAndUpdate({ _id: ObjectID(req.body.id) }, {
         $set: {
           star: req.body.amount + 1
@@ -72,12 +72,12 @@ module.exports = function (app, passport, db) {
   })
 
 
-  //update restaurant info/data 
+  //update jounral info/data 
 
-  app.put('/messages/update', (req, res) => {
+  app.put('/entries/update', (req, res) => {
     console.log(req.body)
 
-    db.collection('messages')
+    db.collection('entries')
       .findOneAndUpdate({ _id: ObjectID(req.body.id) }, {
         $set: {
           title: req.body.updateTitle,
@@ -98,10 +98,10 @@ module.exports = function (app, passport, db) {
 
 
 
-  app.put('/messages/tag', (req, res) => {
+  app.put('/entries/tag', (req, res) => {
     console.log(req.body);
   
-    db.collection('messages')
+    db.collection('entries')
       .findOneAndUpdate(
         { _id: ObjectID(req.body.id) },
         {
@@ -120,12 +120,12 @@ module.exports = function (app, passport, db) {
   });
 
   //
-  app.post('/messages/view', (req, res) => {
-    const messageId = req.body.id;
+  app.post('/entries/view', (req, res) => {
+    const entryId = req.body.id;
 
-    db.collection('messages')
+    db.collection('entries')
       .findOneAndUpdate(
-        { _id: ObjectID(messageId) },
+        { _id: ObjectID(entryId) },
         { $set: { isVisible: { $not: "$isVisible" } } }, // Toggle visibility
         { returnOriginal: false },
         (err, result) => {
@@ -136,10 +136,10 @@ module.exports = function (app, passport, db) {
   });
 
 
-  app.delete('/messages', (req, res) => {
-    db.collection('messages').findOneAndDelete({ _id: ObjectID(req.body.id) }, (err, result) => {
+  app.delete('/entries', (req, res) => {
+    db.collection('entries').findOneAndDelete({ _id: ObjectID(req.body.id) }, (err, result) => {
       if (err) return res.send(500, err)
-      res.send('Message deleted!')
+      res.send('Entry deleted!')
     })
   })
 
