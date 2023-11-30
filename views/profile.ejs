@@ -70,15 +70,15 @@
                     </span>
                   </div>
                 </div>
-              <div class="change">
+                <div class="change">
                 <span>View <i class="fa fa-eye" aria-hidden="true" data-id="<%= entries[i]._id %>"></i></span>
                 <span>Edit <i class="fa fa-edit" aria-hidden="true" data-id="<%= entries[i]._id %>"></i></span>
                 <span>Tag <i class="fa fa-tag" aria-hidden="true" data-id="<%= entries[i]._id %>"></i></span>
                 <span><i class="fa fa-trash-o" aria-hidden="true" data-id="<%= entries[i]._id %>"></i></span>
-              </div>
+               </div>
 
-              <!--TAG JOURNAL-->
-              <div class="tag hidden" id="tag_<%= entries[i]._id %>">
+                <!--TAG JOURNAL-->
+                <div class="tag hidden" id="tag_<%= entries[i]._id %>">
                 <h4>Add a tag</h4>
                 <% if (user.local.email) { %>
                   <form action="/entries/tag?_method=PUT" method="POST">
@@ -88,8 +88,8 @@
                     <button class="tagBut" type="submit">Add Tag</button>
                     </div>
                   </form>
-              </div>
-              <% } %>
+                </div>
+                <% } %>
                   
                   <!--VIEW JOURNAL-->
 
