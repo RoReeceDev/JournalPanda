@@ -13,7 +13,7 @@ module.exports = function (app, passport, db) {
 
   // PROFILE SECTION =========================
   app.get('/profile', isLoggedIn, function (req, res) {
-    db.collection('entries').find().sort({ star: -1 }).toArray((err, result) => {
+    db.collection('entries').find({user: req.user._id}).sort({ star: -1}).toArray((err, result) => {
       if (err) return console.log(err);
       res.render('profile.ejs', {
         user: req.user,
@@ -35,7 +35,7 @@ module.exports = function (app, passport, db) {
   // randomize restaurant server side ==============================================
   app.get('/entries/randomize', (req, res) => {
     db.collection('entries')
-      .find({ star: { $gte: 2, $lte: 4 } }) // Filter by star ratings 3-5
+      .find({ star: { $gte: 2, $lte: 4 }}) // Filter by star ratings 3-5
       .toArray((err, result) => {
         if (err) return res.status(500).json({ error: 'Internal Server Error' });
         res.json(result);
@@ -45,7 +45,8 @@ module.exports = function (app, passport, db) {
   // restaurant routes ===============================================================
 
   app.post('/entries', (req, res) => {
-    db.collection('entries').insertOne({ title: req.body.title, entry: req.body.entry, dateCreated: new Date().toLocaleString(), tagsArr: [], }, (err, result) => {
+    console.log(req.user._id)
+    db.collection('entries').insertOne({ title: req.body.title, entry: req.body.entry, dateCreated: new Date().toLocaleString(), tagsArr: [], user: req.user._id}, (err, result) => {
       if (err) return console.log(err)
       console.log('saved to database')
       res.redirect('/profile')
