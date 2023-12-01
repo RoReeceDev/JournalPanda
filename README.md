@@ -4,6 +4,8 @@ Welcome to my journaling app, a project I created using Node.js, JavaScript, EJS
 
 **Link to Project:** 
 
+https://journalpanda.up.railway.app/
+
 **Screenshot:**
 ![Journal Gif](public/img/Journalpanda.gif)
 
